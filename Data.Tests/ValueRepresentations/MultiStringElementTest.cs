@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Osmosys.Data.Tests.ValueRepresentations
 {
-    public class ApplicationEntityTest
+    public class MultiStringElementTest
     {
         [Fact]
         public void StoresTag()

@@ -2,19 +2,16 @@ using System;
 
 namespace Osmosys.Data.ValueRepresentations
 {
-    public class MultiStringElement
+    public class MultiStringElement : Element
     {
-        public DicomTag Tag { get; }
         private string[] _values;
 
         /// <summary>
         /// Initialises using the specified tag and value.
         /// Throws ArgumentNullException if the tag is null.
         /// </summary>
-        public MultiStringElement(DicomTag tag, string value)
+        public MultiStringElement(DicomTag tag, string value) : base(tag)
         {
-            Tag = tag ?? throw new ArgumentNullException(nameof(tag));
-
             _values = value == null ? new string[] {} : new[] {value};
         }
 
@@ -22,16 +19,15 @@ namespace Osmosys.Data.ValueRepresentations
         /// Initialises using the specified tag and values.
         /// Throws ArgumentNullException if the tag is null.
         /// </summary>
-        public MultiStringElement(DicomTag tag, string[] values)
+        public MultiStringElement(DicomTag tag, string[] values) : base(tag)
         {
-            Tag = tag ?? throw new ArgumentNullException(nameof(tag));
             _values = values ?? Array.Empty<string>();
         }
 
         /// <summary>
         /// Update the value with the specified string.
         /// </summary>
-        public void Update(string value)
+        public override void Update(string value)
         {
             _values = value == null ? Array.Empty<string>() : new[] {value};
         }
@@ -39,7 +35,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// <summary>
         /// Update the value with the specified strings.
         /// </summary>
-        public void Update(string[] values)
+        public override void Update(string[] values)
         {
             _values = values ?? Array.Empty<string>();
         }
@@ -48,7 +44,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// Returns the specified string.
         /// Throws ArgumentException if the string does not exist or the index is negative.
         /// </summary>
-        public string GetString(int index)
+        public override string GetString(int index)
         {
             if (index < 0 || index >= _values.Length)
             {
@@ -62,7 +58,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// Returns the string values of the AE.
         /// </summary>
         /// <returns></returns>
-        public string[] GetStrings()
+        public override string[] GetStrings()
         {
             return _values;
         }
