@@ -44,24 +44,33 @@ namespace Osmosys.Data.ValueRepresentations
 
         public override void Update(DateTime[] dates)
         {
-            _values = dates ?? throw new ArgumentNullException(nameof(dates));
+            _values = dates ?? Array.Empty<DateTime>();
         }
         
         public override void Update(string value)
         {
-            var date = ParseDate(value);
-            _values = new[] {date};
+            if (value == null)
+            {
+                _values = Array.Empty<DateTime>();
+            }
+            else
+            {
+                var date = ParseDate(value);
+                _values = new[] {date};   
+            }
         }
 
         public override void Update(string[] values)
         {
             if (values == null)
             {
-                throw new ArgumentNullException(nameof(values));
+                _values = Array.Empty<DateTime>();
             }
-
-            var dates = values.Select(ParseDate);
-            _values = dates.ToArray();
+            else
+            {
+                var dates = values.Select(ParseDate);
+                _values = dates.ToArray();   
+            }
         }
 
         public override DateTime GetDate(int index)
@@ -78,11 +87,6 @@ namespace Osmosys.Data.ValueRepresentations
 
         private DateTime ParseDate(string value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
             if (DateTime.TryParseExact(value, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None,
                 out var date))
             {
