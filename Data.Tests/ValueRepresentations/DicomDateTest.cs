@@ -7,43 +7,6 @@ namespace Osmosys.Data.Tests.ValueRepresentations
     public class DicomDateTest
     {
         [Fact]
-        public void CanGetString()
-        {
-            var dateA = new DateTime(2001, 09, 30);
-            var dateB = new DateTime(2002, 09, 29);
-            var tag = new DicomTag(1, 2);
-            var date = new DicomDate(tag, new[] {dateA, dateB});
-            
-            var stringVal = date.GetString(1);
-            
-            Assert.Equal("20020929", stringVal);
-        }
-
-        [Fact]
-        public void ThrowsOnInvalidStringRead()
-        {
-            var dateA = new DateTime(2001, 09, 30);
-            var tag = new DicomTag(1, 2);
-            var date = new DicomDate(tag, dateA);
-
-            Assert.Throws<ArgumentException>(() => date.GetString(1));
-        }
-
-        [Fact]
-        public void CanGetStrings()
-        {
-            var dateA = new DateTime(2001, 09, 30);
-            var dateB = new DateTime(2002, 09, 29);
-            var tag = new DicomTag(1, 2);
-            var date = new DicomDate(tag, new[] {dateA, dateB});
-            
-            var values = date.GetStrings();
-            
-            Assert.Equal("20010930", values[0]);
-            Assert.Equal("20020929", values[1]);
-        }
-
-        [Fact]
         public void CanGetDate()
         {
             var dateA = new DateTime(2001, 09, 30);
@@ -105,40 +68,21 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(2, 1);
             var date = new DicomDate(tag, null);
-            date.Update(null as string);
+            date.Update(null as DateTime[]);
             var actual = date.GetDates();
             Assert.Empty(actual);
         }
 
 
         [Fact]
-        public void CanUpdateString()
+        public void ThrowsOnStringRead()
         {
-            var dateString = "20190321";
             var expected = new DateTime(2019, 03, 21);
             var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, null);
-            date.Update(dateString);
-            var actual = date.GetDate(0);
-            Assert.Equal(expected, actual);
-        }
-        
-        [Fact]
-        public void CanUpdateStrings()
-        {
-            var dateStrings = new[]
-            {
-                "20191003",
-                "20180228"
-            };
+            var date = new DicomDate(tag, expected);
 
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, null);
-            date.Update(dateStrings);
-            var dates = date.GetDates();
-            
-            Assert.Equal(new DateTime(2019, 10, 03), dates[0]);
-            Assert.Equal(new DateTime(2018, 02, 28), dates[1]);
+            Assert.Throws<InvalidCastException>(() => date.GetString(0));
+            Assert.Throws<InvalidCastException>(() => date.GetStrings());
         }
     }
 }
