@@ -2,11 +2,11 @@ using System;
 
 namespace Osmosys.Data.ValueRepresentations
 {
-    public abstract class Element
+    public abstract class DicomElement
     {
         public DicomTag Tag { get; }
         
-        protected Element(DicomTag tag)
+        protected DicomElement(DicomTag tag)
         {
             Tag = tag ?? throw new ArgumentNullException(nameof(tag));
         }

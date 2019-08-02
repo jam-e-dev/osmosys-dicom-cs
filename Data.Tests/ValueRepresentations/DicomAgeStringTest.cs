@@ -4,17 +4,17 @@ using Xunit;
 
 namespace Osmosys.Data.Tests.ValueRepresentations
 {
-    public class CodeStringTest
+    public class DicomAgeStringTest
     {
         [Fact]
         public void CanNotReadDate()
         {
             var tag = new DicomTag(1, 2);
             var value = string.Empty;
-            var cs = new CodeString(tag, value);
+            var age = new DicomAgeString(tag, value);
 
-            Assert.Throws<InvalidCastException>(() => cs.GetDate(0));
-            Assert.Throws<InvalidCastException>(() => cs.GetDates());
+            Assert.Throws<InvalidCastException>(() => age.GetDate(0));
+            Assert.Throws<InvalidCastException>(() => age.GetDates());
         }
     }
 }

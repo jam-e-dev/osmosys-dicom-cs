@@ -4,18 +4,18 @@ using System.Linq;
 
 namespace Osmosys.Data.ValueRepresentations
 {
-    public class Date : Element
+    public class DicomDate : DicomElement
     {
         private const string DateFormat = "yyyyMMdd";
 
         private DateTime[] _values;
 
-        public Date(DicomTag tag, DateTime value) : base(tag)
+        public DicomDate(DicomTag tag, DateTime value) : base(tag)
         {
             _values = new[] {value};
         }
 
-        public Date(DicomTag tag, DateTime[] values) : base(tag)
+        public DicomDate(DicomTag tag, DateTime[] values) : base(tag)
         {
             _values = values ?? Array.Empty<DateTime>();
         }

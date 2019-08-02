@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Osmosys.Data.Tests.ValueRepresentations
 {
-    public class DateTest
+    public class DicomDateTest
     {
         [Fact]
         public void CanGetString()
@@ -12,7 +12,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             var dateA = new DateTime(2001, 09, 30);
             var dateB = new DateTime(2002, 09, 29);
             var tag = new DicomTag(1, 2);
-            var date = new Date(tag, new[] {dateA, dateB});
+            var date = new DicomDate(tag, new[] {dateA, dateB});
             
             var stringVal = date.GetString(1);
             
@@ -24,7 +24,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var dateA = new DateTime(2001, 09, 30);
             var tag = new DicomTag(1, 2);
-            var date = new Date(tag, dateA);
+            var date = new DicomDate(tag, dateA);
 
             Assert.Throws<ArgumentException>(() => date.GetString(1));
         }
@@ -35,7 +35,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             var dateA = new DateTime(2001, 09, 30);
             var dateB = new DateTime(2002, 09, 29);
             var tag = new DicomTag(1, 2);
-            var date = new Date(tag, new[] {dateA, dateB});
+            var date = new DicomDate(tag, new[] {dateA, dateB});
             
             var values = date.GetStrings();
             
@@ -49,7 +49,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             var dateA = new DateTime(2001, 09, 30);
             var dateB = new DateTime(2002, 09, 29);
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, new[] {dateA, dateB});
+            var date = new DicomDate(tag, new[] {dateA, dateB});
 
             var value = date.GetDate(1);
 
@@ -61,7 +61,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var dateA = new DateTime(2001, 09, 30);
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, dateA);
+            var date = new DicomDate(tag, dateA);
 
             Assert.Throws<ArgumentException>(() => date.GetDate(1));
         }
@@ -71,7 +71,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var dates = new[] {new DateTime(2001, 09, 30)};
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, dates);
+            var date = new DicomDate(tag, dates);
 
             var values = date.GetDates();
 
@@ -82,7 +82,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         public void CanUpdateDate()
         {
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, null);
+            var date = new DicomDate(tag, null);
             var expected = DateTime.Now.Date;
             date.Update(expected);
             var actual = date.GetDate(0);
@@ -94,7 +94,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(2, 1);
             var expected = new[] {DateTime.Now, DateTime.Now.AddDays(1)};
-            var date = new Date(tag, null);
+            var date = new DicomDate(tag, null);
             date.Update(expected);
             var actual = date.GetDates();
             Assert.Equal(expected, actual);
@@ -104,7 +104,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         public void ReplacesNullWithEmptyArray()
         {
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, null);
+            var date = new DicomDate(tag, null);
             date.Update(null as string);
             var actual = date.GetDates();
             Assert.Empty(actual);
@@ -117,7 +117,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             var dateString = "20190321";
             var expected = new DateTime(2019, 03, 21);
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, null);
+            var date = new DicomDate(tag, null);
             date.Update(dateString);
             var actual = date.GetDate(0);
             Assert.Equal(expected, actual);
@@ -133,7 +133,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             };
 
             var tag = new DicomTag(2, 1);
-            var date = new Date(tag, null);
+            var date = new DicomDate(tag, null);
             date.Update(dateStrings);
             var dates = date.GetDates();
             

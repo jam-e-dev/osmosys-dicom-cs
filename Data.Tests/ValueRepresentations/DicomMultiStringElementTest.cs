@@ -4,14 +4,14 @@ using Xunit;
 
 namespace Osmosys.Data.Tests.ValueRepresentations
 {
-    public class MultiStringElementTest
+    public class DicomMultiStringElementTest
     {
         [Fact]
         public void StoresTag()
         {
             var values = Array.Empty<string>();
             var tag = new DicomTag(1, 2);
-            var ae = new MultiStringElement(tag, values);
+            var ae = new DicomMultiStringElement(tag, values);
             
             Assert.Equal(tag, ae.Tag);
         }
@@ -20,14 +20,14 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var values = Array.Empty<string>();
 
-            Assert.Throws<ArgumentNullException>(() => new MultiStringElement(null, values));
+            Assert.Throws<ArgumentNullException>(() => new DicomMultiStringElement(null, values));
         }
 
         [Fact]
         public void CanReadString()
         {
             var tag = new DicomTag(1, 2);
-            var ae = new MultiStringElement(tag, "Example");
+            var ae = new DicomMultiStringElement(tag, "Example");
             
             var value = ae.GetString(0);
             
@@ -39,7 +39,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
-            var ae = new MultiStringElement(tag, values);
+            var ae = new DicomMultiStringElement(tag, values);
 
             Assert.Throws<ArgumentException>(() => ae.GetString(1));
             Assert.Throws<ArgumentException>(() => ae.GetString(-1));
@@ -50,7 +50,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
-            var ae = new MultiStringElement(tag, values);
+            var ae = new DicomMultiStringElement(tag, values);
             
             Assert.Equal(values, ae.GetStrings());
         }
@@ -60,7 +60,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
-            var ae = new MultiStringElement(tag, values);
+            var ae = new DicomMultiStringElement(tag, values);
             
             ae.Update("Another");
             
@@ -73,7 +73,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
             var newValues = new[] {"Another"};
-            var ae = new MultiStringElement(tag, values);
+            var ae = new DicomMultiStringElement(tag, values);
             
             ae.Update(newValues);
             
@@ -84,7 +84,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         public void ReplacesNullWithEmptyArray()
         {
             var tag = new DicomTag(1, 2);
-            var ae = new MultiStringElement(tag, null as string[]);
+            var ae = new DicomMultiStringElement(tag, null as string[]);
             
             Assert.Empty(ae.GetStrings());
         }

@@ -2,7 +2,7 @@ using System;
 
 namespace Osmosys.Data.ValueRepresentations
 {
-    public class MultiStringElement : Element
+    public class DicomMultiStringElement : DicomElement
     {
         private string[] _values;
 
@@ -10,7 +10,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// Initialises using the specified tag and value.
         /// Throws ArgumentNullException if the tag is null.
         /// </summary>
-        public MultiStringElement(DicomTag tag, string value) : base(tag)
+        public DicomMultiStringElement(DicomTag tag, string value) : base(tag)
         {
             _values = value == null ? new string[] {} : new[] {value};
         }
@@ -19,7 +19,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// Initialises using the specified tag and values.
         /// Throws ArgumentNullException if the tag is null.
         /// </summary>
-        public MultiStringElement(DicomTag tag, string[] values) : base(tag)
+        public DicomMultiStringElement(DicomTag tag, string[] values) : base(tag)
         {
             _values = values ?? Array.Empty<string>();
         }
