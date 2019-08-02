@@ -8,22 +8,25 @@ namespace Osmosys.Data.ValueRepresentations
 
         public DicomDate(DicomTag tag, DateTime value) : base(tag)
         {
-            _values = new[] {value};
+            _values = new[] {value.Date};
         }
 
         public DicomDate(DicomTag tag, DateTime[] values) : base(tag)
         {
             _values = values ?? Array.Empty<DateTime>();
+
+            RemoveTimeComponents();
         }
 
         public override void Update(DateTime date)
         {
-            _values = new[] {date};
+            _values = new[] {date.Date};
         }
 
         public override void Update(DateTime[] dates)
         {
             _values = dates ?? Array.Empty<DateTime>();
+            RemoveTimeComponents();
         }
 
         public override DateTime GetDate(int index)
@@ -37,5 +40,13 @@ namespace Osmosys.Data.ValueRepresentations
         }
 
         public override DateTime[] GetDates() => _values;
+        
+        private void RemoveTimeComponents()
+        {
+            for (var i = 0; i < _values.Length; i++)
+            {
+                _values[i] = _values[i].Date;
+            }
+        }
     }
 }
