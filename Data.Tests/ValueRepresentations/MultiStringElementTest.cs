@@ -11,7 +11,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var values = Array.Empty<string>();
             var tag = new DicomTag(1, 2);
-            var ae = new ApplicationEntity(tag, values);
+            var ae = new MultiStringElement(tag, values);
             
             Assert.Equal(tag, ae.Tag);
         }
@@ -20,14 +20,14 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var values = Array.Empty<string>();
 
-            Assert.Throws<ArgumentNullException>(() => new ApplicationEntity(null, values));
+            Assert.Throws<ArgumentNullException>(() => new MultiStringElement(null, values));
         }
 
         [Fact]
         public void CanReadString()
         {
             var tag = new DicomTag(1, 2);
-            var ae = new ApplicationEntity(tag, "Example");
+            var ae = new MultiStringElement(tag, "Example");
             
             var value = ae.GetString(0);
             
@@ -39,7 +39,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
-            var ae = new ApplicationEntity(tag, values);
+            var ae = new MultiStringElement(tag, values);
 
             Assert.Throws<ArgumentException>(() => ae.GetString(1));
             Assert.Throws<ArgumentException>(() => ae.GetString(-1));
@@ -50,7 +50,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
-            var ae = new ApplicationEntity(tag, values);
+            var ae = new MultiStringElement(tag, values);
             
             Assert.Equal(values, ae.GetStrings());
         }
@@ -60,7 +60,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         {
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
-            var ae = new ApplicationEntity(tag, values);
+            var ae = new MultiStringElement(tag, values);
             
             ae.Update("Another");
             
@@ -73,7 +73,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             var tag = new DicomTag(1, 2);
             var values = new[] {"Example"};
             var newValues = new[] {"Another"};
-            var ae = new ApplicationEntity(tag, values);
+            var ae = new MultiStringElement(tag, values);
             
             ae.Update(newValues);
             
@@ -84,7 +84,7 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         public void ReplacesNullWithEmptyArray()
         {
             var tag = new DicomTag(1, 2);
-            var ae = new ApplicationEntity(tag, null as string[]);
+            var ae = new MultiStringElement(tag, null as string[]);
             
             Assert.Empty(ae.GetStrings());
         }
