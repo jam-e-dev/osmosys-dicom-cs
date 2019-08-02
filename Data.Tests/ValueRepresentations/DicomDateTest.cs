@@ -84,5 +84,16 @@ namespace Osmosys.Data.Tests.ValueRepresentations
             Assert.Throws<InvalidCastException>(() => date.GetString(0));
             Assert.Throws<InvalidCastException>(() => date.GetStrings());
         }
+
+        [Fact]
+        public void RemovesTimeComponent()
+        {
+            var now = DateTime.Now;
+            var tag = new DicomTag(2, 1);
+            var date = new DicomDate(tag, now);
+            var actual = date.GetDate(0);
+            Assert.NotEqual(now, actual);
+            Assert.Equal(now.Date, actual);
+        }
     }
 }
