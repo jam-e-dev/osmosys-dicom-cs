@@ -42,33 +42,10 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         }
 
         [Fact]
-        public void CanUpdateDate()
-        {
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, null);
-            var expected = DateTime.Now.Date;
-            date.Update(expected);
-            var actual = date.GetDate(0);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void CanUpdateDates()
-        {
-            var tag = new DicomTag(2, 1);
-            var expected = new[] {DateTime.Now, DateTime.Now.AddDays(1)};
-            var date = new DicomDate(tag, null);
-            date.Update(expected);
-            var actual = date.GetDates();
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void ReplacesNullWithEmptyArray()
         {
             var tag = new DicomTag(2, 1);
             var date = new DicomDate(tag, null);
-            date.Update(null as DateTime[]);
             var actual = date.GetDates();
             Assert.Empty(actual);
         }
