@@ -4,7 +4,7 @@ namespace Osmosys.Data.ValueRepresentations
 {
     public class DicomMultiStringElement : DicomElement
     {
-        private string[] _values;
+        protected string[] Values;
 
         /// <summary>
         /// Initialises using the specified tag and value.
@@ -12,7 +12,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// </summary>
         public DicomMultiStringElement(DicomTag tag, string value) : base(tag)
         {
-            _values = value == null ? new string[] {} : new[] {value};
+            Values = value == null ? new string[] {} : new[] {value};
         }
 
         /// <summary>
@@ -21,37 +21,21 @@ namespace Osmosys.Data.ValueRepresentations
         /// </summary>
         public DicomMultiStringElement(DicomTag tag, string[] values) : base(tag)
         {
-            _values = values ?? Array.Empty<string>();
+            this.Values = values ?? Array.Empty<string>();
         }
-
-        /// <summary>
-        /// Update the value with the specified string.
-        /// </summary>
-        public override void Update(string value)
-        {
-            _values = value == null ? Array.Empty<string>() : new[] {value};
-        }
-
-        /// <summary>
-        /// Update the value with the specified strings.
-        /// </summary>
-        public override void Update(string[] values)
-        {
-            _values = values ?? Array.Empty<string>();
-        }
-
+        
         /// <summary>
         /// Returns the specified string.
         /// Throws ArgumentException if the string does not exist or the index is negative.
         /// </summary>
         public override string GetString(int index)
         {
-            if (index < 0 || index >= _values.Length)
+            if (index < 0 || index >= Values.Length)
             {
                 throw new ArgumentException($"Value {index} does not exists.");
             }
 
-            return _values[index];
+            return Values[index];
         }
 
         /// <summary>
@@ -60,7 +44,7 @@ namespace Osmosys.Data.ValueRepresentations
         /// <returns></returns>
         public override string[] GetStrings()
         {
-            return _values;
+            return Values;
         }
     }
 }

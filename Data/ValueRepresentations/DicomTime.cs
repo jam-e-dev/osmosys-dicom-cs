@@ -30,15 +30,5 @@ namespace Osmosys.Data.ValueRepresentations
         {
             return _values;
         }
-
-        public override void Update(TimeSpan time)
-        {
-            _values = new[] {time};
-        }
-
-        public override void Update(TimeSpan[] times)
-        {
-            _values = times ?? Array.Empty<TimeSpan>();
-        }
     }
 }

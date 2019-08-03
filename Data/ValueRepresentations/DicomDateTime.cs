@@ -16,16 +16,6 @@ namespace Osmosys.Data.ValueRepresentations
             _values = values ?? Array.Empty<DateTime>();
         }
 
-        public override void Update(DateTime date)
-        {
-            _values = new[] {date};
-        }
-
-        public override void Update(DateTime[] dates)
-        {
-            _values = dates ?? Array.Empty<DateTime>();
-        }
-
         public override DateTime GetDate(int index)
         {
             if (index < 0 || index >= _values.Length)

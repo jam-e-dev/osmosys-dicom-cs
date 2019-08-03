@@ -18,17 +18,6 @@ namespace Osmosys.Data.ValueRepresentations
             RemoveTimeComponents();
         }
 
-        public override void Update(DateTime date)
-        {
-            _values = new[] {date.Date};
-        }
-
-        public override void Update(DateTime[] dates)
-        {
-            _values = dates ?? Array.Empty<DateTime>();
-            RemoveTimeComponents();
-        }
-
         public override DateTime GetDate(int index)
         {
             if (index < 0 || index >= _values.Length)

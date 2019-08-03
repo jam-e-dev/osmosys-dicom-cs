@@ -7,6 +7,9 @@ namespace Osmosys.Data.ValueRepresentations
         private const string DateError = "Date type not supported.";
         private const string StringError = "String type not supported.";
         private const string TimeError = "Time type not supported.";
+        private const string IntError = "Int type not supported.";
+        private const string FloatError = "Float type not supported.";
+        private const string DoubleError = "Double type not supported.";
 
         public DicomTag Tag { get; }
 
@@ -26,17 +29,17 @@ namespace Osmosys.Data.ValueRepresentations
         public virtual TimeSpan GetTime(int index) => throw new InvalidCastException(TimeError);
         
         public virtual TimeSpan[] GetTimes() => throw new InvalidCastException(TimeError);
-
-        public virtual void Update(string value) => throw new InvalidCastException(StringError);
-
-        public virtual void Update(string[] values) => throw new InvalidCastException(StringError);
-
-        public virtual void Update(DateTime date) => throw new InvalidCastException(DateError);
         
-        public virtual void Update(DateTime[] dates) => throw new InvalidCastException(DateError);
-
-        public virtual void Update(TimeSpan time) => throw new InvalidCastException(TimeError);
+        public virtual int GetInt(int index) => throw new InvalidCastException();
         
-        public virtual void Update(TimeSpan[] times) => throw new InvalidCastException(TimeError);
+        public virtual int[] GetInts() => throw new InvalidCastException();
+        
+        public virtual float GetFloat(int index) => throw new InvalidCastException();
+        
+        public virtual float[] GetFloats() => throw new InvalidCastException();
+        
+        public virtual double GetDouble(int index) => throw new InvalidCastException();
+        
+        public virtual double[] GetDoubles() => throw new InvalidCastException();
     }
 }

@@ -36,33 +36,10 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         }
 
         [Fact]
-        public void CanUpdateTime()
-        {
-            var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, null);
-            var expected = DateTime.Now.TimeOfDay;
-            time.Update(expected);
-            var actual = time.GetTime(0);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void CanUpdateTimes()
-        {
-            var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, null);
-            var expected = new[] {DateTime.Now.TimeOfDay, DateTime.Now.AddHours(1).TimeOfDay};
-            time.Update(expected);
-            var actual = time.GetTimes();
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void ReplacesNullWithEmptyArray()
         {
             var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, DateTime.Now.TimeOfDay);
-            time.Update(null as TimeSpan[]);
+            var time = new DicomTime(tag, null);
             var actual = time.GetTimes();
             Assert.Empty(actual);
         }

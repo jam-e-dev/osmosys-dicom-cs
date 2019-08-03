@@ -56,31 +56,6 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         }
 
         [Fact]
-        public void CanUpdateString()
-        {
-            var tag = new DicomTag(1, 2);
-            var values = new[] {"Example"};
-            var ae = new DicomMultiStringElement(tag, values);
-            
-            ae.Update("Another");
-            
-            Assert.Equal("Another", ae.GetString(0));
-        }
-
-        [Fact]
-        public void CanUpdateStrings()
-        {
-            var tag = new DicomTag(1, 2);
-            var values = new[] {"Example"};
-            var newValues = new[] {"Another"};
-            var ae = new DicomMultiStringElement(tag, values);
-            
-            ae.Update(newValues);
-            
-            Assert.Equal("Another", ae.GetString(0));
-        }
-        
-        [Fact]
         public void ReplacesNullWithEmptyArray()
         {
             var tag = new DicomTag(1, 2);
