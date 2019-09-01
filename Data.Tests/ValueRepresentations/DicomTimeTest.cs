@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Osmosys.Data.Extensions;
 using Osmosys.Data.ValueRepresentations;
 using Xunit;
 
@@ -9,37 +11,52 @@ namespace Osmosys.Data.Tests.ValueRepresentations
         [Fact]
         public void CanReadTime()
         {
-            var expected = DateTime.Now.TimeOfDay;
-            var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, expected);
-            var actual = time.GetTime(0);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void ThrowsOnInvalidTimeRead()
-        {
-            var expected = DateTime.Now.TimeOfDay;
-            var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, expected);
-            Assert.Throws<ArgumentException>(() => time.GetTime(1));
+            var expected = TestData.TimeSpan;
+            var time = new DicomTime(TestData.Tag, expected);
+            var actual = time.GetTime();
+            Assert.Equal(expected, actual.Min);
         }
 
         [Fact]
         public void CanReadTimes()
         {
-            var expected = new[] {DateTime.Now.TimeOfDay};
-            var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, expected);
+            var expected = new[] {TestData.TimeSpan, TestData.TimeSpan};
+            var time = new DicomTime(TestData.Tag, expected);
             var actual = time.GetTimes();
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Select(x => new Range<TimeSpan>(x)), actual);
+        }
+
+        [Fact]
+        public void CanReadString()
+        {
+            var timeSpan = TestData.TimeSpan;
+            var time = new DicomTime(TestData.Tag, timeSpan);
+            var actual = time.GetString();
+            Assert.Equal(timeSpan.ToDicomString(), actual);
+        }
+
+        [Fact]
+        public void CanReadStrings()
+        {
+            var expected = new[] {TestData.TimeSpan, TestData.TimeSpan};
+            var time = new DicomTime(TestData.Tag, expected);
+            var actual = time.GetStrings();
+            Assert.Equal(expected.Select(x => x.ToDicomString()), actual);
+        }
+        
+        [Fact]
+        public void ThrowsOnInvalidTimeRead()
+        {
+            var expected = TestData.TimeSpan;
+            var time = new DicomTime(TestData.Tag, expected);
+            Assert.Throws<ArgumentException>(() => time.GetTime(1));
+            Assert.Throws<ArgumentException>(() => time.GetTime(-1));
         }
 
         [Fact]
         public void ReplacesNullWithEmptyArray()
         {
-            var tag = new DicomTag(1, 2);
-            var time = new DicomTime(tag, null);
+            var time = new DicomTime(TestData.Tag, null as Range<TimeSpan>);
             var actual = time.GetTimes();
             Assert.Empty(actual);
         }

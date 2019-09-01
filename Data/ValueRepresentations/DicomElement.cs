@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Osmosys.Data.ValueRepresentations
 {
@@ -18,28 +19,28 @@ namespace Osmosys.Data.ValueRepresentations
             Tag = tag ?? throw new ArgumentNullException(nameof(tag));
         }
 
-        public virtual string GetString(int index) => throw new InvalidCastException(StringError);
+        public virtual string GetString(int index = 0) => throw new InvalidCastException(StringError);
 
-        public virtual string[] GetStrings() => throw new InvalidCastException(StringError);
+        public virtual IEnumerable<string> GetStrings() => throw new InvalidCastException(StringError);
 
-        public virtual DateTime GetDate(int index) => throw new InvalidCastException(DateError);
+        public virtual Range<DateTime> GetDate(int index = 0) => throw new InvalidCastException(DateError);
 
-        public virtual DateTime[] GetDates() => throw new InvalidCastException(DateError);
+        public virtual IEnumerable<Range<DateTime>> GetDates() => throw new InvalidCastException(DateError);
 
-        public virtual TimeSpan GetTime(int index) => throw new InvalidCastException(TimeError);
+        public virtual Range<TimeSpan> GetTime(int index = 0) => throw new InvalidCastException(TimeError);
         
-        public virtual TimeSpan[] GetTimes() => throw new InvalidCastException(TimeError);
+        public virtual IEnumerable<Range<TimeSpan>> GetTimes() => throw new InvalidCastException(TimeError);
         
-        public virtual int GetInt(int index) => throw new InvalidCastException();
+        public virtual int GetInt(int index = 0) => throw new InvalidCastException(IntError);
         
-        public virtual int[] GetInts() => throw new InvalidCastException();
+        public virtual IEnumerable<int> GetInts() => throw new InvalidCastException(IntError);
         
-        public virtual float GetFloat(int index) => throw new InvalidCastException();
+        public virtual float GetFloat(int index = 0) => throw new InvalidCastException(FloatError);
         
-        public virtual float[] GetFloats() => throw new InvalidCastException();
+        public virtual IEnumerable<float> GetFloats() => throw new InvalidCastException(FloatError);
         
-        public virtual double GetDouble(int index) => throw new InvalidCastException();
+        public virtual double GetDouble(int index = 0) => throw new InvalidCastException(DoubleError);
         
-        public virtual double[] GetDoubles() => throw new InvalidCastException();
+        public virtual IEnumerable<double> GetDoubles() => throw new InvalidCastException(DoubleError);
     }
 }
