@@ -7,40 +7,74 @@ namespace Osmosys.Data.Tests.ValueRepresentations
     public class DicomAgeStringTest
     {
         [Fact]
-        public void ThrowsOnDateRead()
+        public void CanReadString()
         {
-            var tag = new DicomTag(1, 2);
-            var value = string.Empty;
-            var age = new DicomAgeString(tag, value);
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            var actual = age.GetString();
+            Assert.Equal(TestData.AgeString, actual);
+        }
 
-            Assert.Throws<InvalidCastException>(() => age.GetDate(0));
-            Assert.Throws<InvalidCastException>(() => age.GetDates());
+        [Fact]
+        public void CanReplaceNullInput()
+        {
+            var age = new DicomAgeString(TestData.Tag, null);
+            var actual = age.GetString();
+            Assert.Equal(string.Empty, actual);
+        }
+
+        [Fact]
+        public void CannotReadInvalidString()
+        {
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            Assert.Throws<ArgumentException>(() => age.GetString(1));
+            Assert.Throws<ArgumentException>(() => age.GetString(-1));
+        }
+
+        [Fact]
+        public void CanReadStrings()
+        {
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            var actual = age.GetStrings();
+            Assert.Equal(new[]{TestData.AgeString}, actual);
         }
         
         [Fact]
-        public void ThrowsOnIntRead()
+        public void CannotReadDates()
         {
-            var tag = new DicomTag(1, 2);
-            var age = new DicomAgeString(tag, null as string);
-            Assert.Throws<InvalidCastException>(() => age.GetInt(0));
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            Assert.Throws<InvalidCastException>(() => age.GetDate());
+            Assert.Throws<InvalidCastException>(() => age.GetDates());
+        }
+
+        [Fact]
+        public void CannotReadTimes()
+        {
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            Assert.Throws<InvalidCastException>(() => age.GetTime());
+            Assert.Throws<InvalidCastException>(() => age.GetTimes());
+        }
+        
+        [Fact]
+        public void CannotReadInts()
+        {
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            Assert.Throws<InvalidCastException>(() => age.GetInt());
             Assert.Throws<InvalidCastException>(() => age.GetInts());
         }
         
         [Fact]
-        public void ThrowsOnFloatRead()
+        public void CannotReadFloats()
         {
-            var tag = new DicomTag(1, 2);
-            var age = new DicomAgeString(tag, null as string);
-            Assert.Throws<InvalidCastException>(() => age.GetFloat(0));
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            Assert.Throws<InvalidCastException>(() => age.GetFloat());
             Assert.Throws<InvalidCastException>(() => age.GetFloats());
         }
         
         [Fact]
-        public void ThrowsOnDoubleRead()
+        public void CannotReadDoubles()
         {
-            var tag = new DicomTag(1, 2);
-            var age = new DicomAgeString(tag, null as string);
-            Assert.Throws<InvalidCastException>(() => age.GetDouble(0));
+            var age = new DicomAgeString(TestData.Tag, TestData.AgeString);
+            Assert.Throws<InvalidCastException>(() => age.GetDouble());
             Assert.Throws<InvalidCastException>(() => age.GetDoubles());
         }
     }

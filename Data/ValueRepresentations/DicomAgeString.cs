@@ -1,6 +1,6 @@
 namespace Osmosys.Data.ValueRepresentations
 {
-    public class DicomAgeString : DicomMultiStringElement
+    public class DicomAgeString : DicomStringElement
     {
         public DicomAgeString(DicomTag tag, string value) : base(tag, value)
         {
