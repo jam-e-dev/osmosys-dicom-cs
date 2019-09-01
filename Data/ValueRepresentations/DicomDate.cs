@@ -1,41 +1,42 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Osmosys.Data.Extensions;
 
 namespace Osmosys.Data.ValueRepresentations
 {
-    public class DicomDate : DicomElement
+    public class DicomDate : DicomMultiValueElement<Range<DateTime>>
     {
-        private DateTime[] _values;
-
-        public DicomDate(DicomTag tag, DateTime value) : base(tag)
+        public DicomDate(DicomTag tag, DateTime value) : base(tag, new Range<DateTime>(value))
         {
-            _values = new[] {value.Date};
         }
 
-        public DicomDate(DicomTag tag, DateTime[] values) : base(tag)
+        public DicomDate(DicomTag tag, IEnumerable<DateTime> values) : base(tag, values?.Select(x => new Range<DateTime>(x)).ToArray())
         {
-            _values = values ?? Array.Empty<DateTime>();
-
-            RemoveTimeComponents();
         }
 
-        public override DateTime GetDate(int index)
+        public DicomDate(DicomTag tag, Range<DateTime> value) : base(tag, value == null ? null : new[] {value})
         {
-            if (index < 0 || index >= _values.Length)
-            {
-                throw new ArgumentException($"Index {index} does not exist.");
-            }
-
-            return _values[index];
         }
 
-        public override DateTime[] GetDates() => _values;
-        
-        private void RemoveTimeComponents()
+        public DicomDate(DicomTag tag, Range<DateTime>[] values) : base(tag, values)
         {
-            for (var i = 0; i < _values.Length; i++)
-            {
-                _values[i] = _values[i].Date;
-            }
         }
+
+        public DicomDate(DicomTag tag, string value) : base(tag,value?.ToDateRanges().ToArray())
+        {
+        }
+
+        public DicomDate(DicomTag tag, IEnumerable<string> values) : base(tag, values?.ToDateRanges().ToArray())
+        {
+        }
+
+        public override Range<DateTime> GetDate(int index = 0) => GetValue(index);
+
+        public override IEnumerable<Range<DateTime>> GetDates() => Values;
+
+        public override string GetString(int index = 0) => GetValue(index).ToDicomDateString();
+
+        public override IEnumerable<string> GetStrings() => GetDates().Select(x => x.ToDicomDateString());
     }
 }

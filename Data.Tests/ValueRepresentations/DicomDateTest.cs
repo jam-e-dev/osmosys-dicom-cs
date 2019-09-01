@@ -7,70 +7,103 @@ namespace Osmosys.Data.Tests.ValueRepresentations
     public class DicomDateTest
     {
         [Fact]
-        public void CanGetDate()
+        public void CanReadDate()
         {
-            var dateA = new DateTime(2001, 09, 30);
-            var dateB = new DateTime(2002, 09, 29);
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, new[] {dateA, dateB});
-
-            var value = date.GetDate(1);
-
-            Assert.Equal(dateB, value);
+            var expected = TestData.DateTimes;
+            var da = new DicomDate(TestData.Tag, expected);
+            var actual = da.GetDate(1);
+            Assert.Equal(expected[1], actual.Min);
         }
 
         [Fact]
-        public void ThrowsOnInvalidDateRead()
+        public void CannotReadInvalidDate()
         {
-            var dateA = new DateTime(2001, 09, 30);
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, dateA);
-
-            Assert.Throws<ArgumentException>(() => date.GetDate(1));
+            var expected = TestData.DateTime;
+            var da = new DicomDate(TestData.Tag, expected);
+            Assert.Throws<ArgumentException>(() => da.GetDate(1));
+            Assert.Throws<ArgumentException>(() => da.GetDate(-1));
         }
 
         [Fact]
-        public void CanGetDates()
+        public void CanReadDates()
         {
-            var dates = new[] {new DateTime(2001, 09, 30)};
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, dates);
-
-            var values = date.GetDates();
-
-            Assert.Equal(dates, values);
+            var expected = TestData.DateTimeRange;
+            var da = new DicomDate(TestData.Tag, expected);
+            var actual = da.GetDates();
+            Assert.Equal(new[]{expected}, actual);
         }
 
         [Fact]
-        public void ReplacesNullWithEmptyArray()
+        public void CanReadString()
         {
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, null);
-            var actual = date.GetDates();
-            Assert.Empty(actual);
-        }
-
-
-        [Fact]
-        public void ThrowsOnStringRead()
-        {
-            var expected = new DateTime(2019, 03, 21);
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, expected);
-
-            Assert.Throws<InvalidCastException>(() => date.GetString(0));
-            Assert.Throws<InvalidCastException>(() => date.GetStrings());
+            var expected = new[]{"20191003", "20191104"};
+            var da = new DicomDate(TestData.Tag, expected);
+            var actual = da.GetString();
+            Assert.Equal(expected[0], actual);
         }
 
         [Fact]
-        public void RemovesTimeComponent()
+        public void CanReadStrings()
         {
-            var now = DateTime.Now;
-            var tag = new DicomTag(2, 1);
-            var date = new DicomDate(tag, now);
-            var actual = date.GetDate(0);
-            Assert.NotEqual(now, actual);
-            Assert.Equal(now.Date, actual);
+            var expected = new[]{"20191003", "20191104"};
+            var da = new DicomDate(TestData.Tag, string.Join("\\", expected));
+            var actual = da.GetStrings();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanReadRangeString()
+        {
+            var expected = new[]{"20190102-20191003", "20190203-20190304"};
+            var da = new DicomDate(TestData.Tag, expected);
+            var actual = da.GetString();
+            Assert.Equal(expected[0], actual);
+        }
+
+        [Fact]
+        public void CanReadRangeStrings()
+        {
+            var expected = "20190102-20191003";
+            var da = new DicomDate(TestData.Tag, expected);
+            var actual = da.GetStrings();
+            Assert.Equal(new[] {expected}, actual);
+        }
+
+        [Fact]
+        public void CanReplaceNull()
+        {
+            var da = new DicomDate(TestData.Tag, null as DateTime[]);
+            Assert.Empty(da.GetStrings());
+            
+            da = new DicomDate(TestData.Tag, null as Range<DateTime>);
+            Assert.Empty(da.GetStrings());
+            
+            da = new DicomDate(TestData.Tag, null as Range<DateTime>[]);
+            Assert.Empty(da.GetStrings());
+        }
+
+        [Fact]
+        public void CannotReadInts()
+        {
+            var da = new DicomDate(TestData.Tag, TestData.DateTime);
+            Assert.Throws<InvalidCastException>(() => da.GetInt());
+            Assert.Throws<InvalidCastException>(() => da.GetInts());
+        }
+
+        [Fact]
+        public void CannotReadFloats()
+        {
+            var da = new DicomDate(TestData.Tag, TestData.DateTime);
+            Assert.Throws<InvalidCastException>(() => da.GetFloat());
+            Assert.Throws<InvalidCastException>(() => da.GetFloats());
+        }
+
+        [Fact]
+        public void CannotReadDoubles()
+        {
+            var da = new DicomDate(TestData.Tag, TestData.DateTime);
+            Assert.Throws<InvalidCastException>(() => da.GetDouble());
+            Assert.Throws<InvalidCastException>(() => da.GetDoubles());
         }
     }
 }
